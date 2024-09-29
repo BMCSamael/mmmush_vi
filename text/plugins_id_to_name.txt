@@ -62,6 +62,7 @@ d2b442f2da9a95f34f5a199f reagents_counter.xml
 463242566069ebfd1b379ec1 Sapi_speaker.xml
 4e2bf9f75646bf678cf620dd sbrief.xml
 697bd90f4f6ee5ac1493050c scan_helper.xml
+f99134f19ea994a0cc0888d8 searchandprocessplugin.xml
 7daf1d7890d9db73d74a8188 sequencer.xml
 522cd3350766f852d36c5e5c ship_kp.xml
 dc22833520922eacc933b2ac ship_lookout.xml

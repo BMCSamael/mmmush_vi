@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE muclient>
+<muclient>
+  <plugin
+    name="SearchAndProcessPlugin"
+    author="Tamlin"
+    id="f99134f19ea994a0cc0888d8"
+    language="Lua"
+    purpose="Performs a search and processes results in MUSHclient."
+    date_written="2024-08-08 06:47:39"
+    version="1.0"
+  >
+    <description trim="y">
+      <![CDATA[
+      This plugin allows you to perform a search within MUSHclient and process the results.
+      You can specify an optional limit on the number of lines to process.
+      ]]>
+    </description>
+  </plugin>
+
+  <!-- Aliases -->
+  <aliases>
+    <alias
+      enabled="y"
+      match="^sc (.+?)(|[ ]+(?P&lt;state&gt;[0-9]+))$"
+      regexp="y"
+      send_to="12"
+      sequence="100"
+    >
+      <send>
+        SearchAndProcess("%1", "%&lt;state&gt;")
+      </send>
+    </alias>
+  </aliases>
+
+  <!-- Scripts -->
+  <script>
+    <![CDATA[
+function SearchAndProcess(search_term, limit)
+  -- Set default limit to 5 if not specified
+  limit = tonumber(limit) or 5
+  
+  -- Convert the search term to lowercase
+  search_term = search_term:lower()
+  
+  local repeat_num = 0
+  local lines = GetLinesInBufferCount()
+
+  -- Loop through the output buffer in reverse to search for the term
+  for i = lines, 1, -1 do
+    local line = GetLineInfo(i, 1)  -- Get the content of the line
+    
+    -- Convert the line to lowercase and search
+    if string.find(line:lower(), search_term) then
+      repeat_num = repeat_num + 1
+      
+      -- Process the found line
+      Execute("sapi say " .. line)  -- Send the line to sapi say
+      
+      if repeat_num >= limit then
+        Note("Limit reached, stopping search.")
+        break  -- Stop processing after reaching the limit
+      end
+    end
+  end
+end
+    ]]>
+  </script>
+</muclient>
